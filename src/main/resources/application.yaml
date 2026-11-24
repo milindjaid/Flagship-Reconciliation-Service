@@ -1,0 +1,107 @@
+#server:
+#  port: 8089
+#
+#spring:
+#  kafka:
+#    bootstrap-servers: localhost:9092
+#    consumer:
+#      group-id: reconciliation-service-group
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#        spring.json.trusted.packages: "com.flagship.common_lib.dto"
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      acks: all
+#
+#  application:
+#    name: Reconciliation-Service
+#
+#  datasource:
+#    url: jdbc:postgresql://localhost:5433/flagship
+#    username: postgres
+#    password: admin
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    hibernate:
+#      ddl-auto: validate   # validate | update | create | create-drop
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        jdbc:
+#          time_zone: UTC
+#
+#  sql:
+#    init:
+#      mode: never
+#
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.boot.context.config: DEBUG
+#
+#grpc:
+#  server:
+#    port: 9096
+
+server:
+  port: 8089
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: order-service-group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.flagship.common_lib.dto"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 5
+      properties:
+        enable.idempotence: true
+
+  application:
+    name: Payment-Orchestrators
+  datasource:
+    url: jdbc:postgresql://localhost:5433/flagship
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate   # validate | update | create | create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.boot.context.config: DEBUG
+
+grpc:
+  server:
+    port: 9096
